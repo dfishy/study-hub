@@ -1,6 +1,7 @@
 import Timer from './component/timer';
 import FloatingNav from './component/floatingnav';
 import { useState } from 'react';
+import { TimerProvider } from './context/timercontext';
 
 /**
  * STUDY HUB - MAIN APPLICATION COMPONENT
@@ -64,50 +65,53 @@ function App() {
   };
 
   return (
-    // The main container with gradient background and font
-    // min-h-screen ensures it takes full viewport height
-    // relative positioning allows floating nav to position absolutely within
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 font-['VT323'] relative">
-      
-      {/* Floating Navigation Component */}
-      {/* Provides draggable tab navigation across all Study Hub features */}
-      <FloatingNav 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab} 
-      />
-      
-      {/* Main content area with safe padding for floating navigation */}
-      <div className="container mx-auto px-4 py-8 max-w-4xl flex flex-col items-center justify-center">
+    // Wrap entire app with TimerProvider for global timer state management
+    <TimerProvider>
+      {/* The main container with gradient background and font */}
+      {/* min-h-screen ensures it takes full viewport height */}
+      {/* relative positioning allows floating nav to position absolutely within */}
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 font-['VT323'] relative">
         
-        {/* Header */}
-        {/* Introduction to the web app with dynamic text based on active tab */}
-        <header className="mb-8 text-center pt-8">
-          <h1 className="text-5xl font-bold text-amber-900 mb-2 font-['VT323'] tracking-wide">STUDY HUB</h1>
-          <p className="text-lg text-amber-700">
-            {activeTab === 'timer' && 'Your all-in-one focus companion.'}
-            {activeTab === 'goals' && 'Set and achieve your study goals.'}
-            {activeTab === 'todo' && 'Organize your tasks and assignments.'}
-            {activeTab === 'calendar' && 'Plan your study schedule.'}
-            {activeTab === 'whiteboard' && 'Visualize your ideas and concepts.'}
-          </p>
-        </header>
+        {/* Floating Navigation Component */}
+        {/* Provides draggable tab navigation across all Study Hub features */}
+        <FloatingNav 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+        />
         
-        {/* Main content area */}
-        {/* Dynamically renders content based on active navigation tab */}
-        <main className="w-full max-w-2xl">
-          {renderActiveContent()}
-        </main>
-        
-        {/* Footer */}
-        {/* Contextual message based on current feature being viewed */}
-        <footer className="mt-12 text-sm text-amber-600">
-          <p>
-            {activeTab === 'timer' && 'More features coming soon! :3'}
-            {activeTab !== 'timer' && 'This feature is under development! 🛠️'}
-          </p>
-        </footer>
+        {/* Main content area with safe padding for floating navigation */}
+        <div className="container mx-auto px-4 py-8 max-w-4xl flex flex-col items-center justify-center">
+          
+          {/* Header */}
+          {/* Introduction to the web app with dynamic text based on active tab */}
+          <header className="mb-8 text-center pt-8">
+            <h1 className="text-5xl font-bold text-amber-900 mb-2 font-['VT323'] tracking-wide">STUDY HUB</h1>
+            <p className="text-lg text-amber-700">
+              {activeTab === 'timer' && 'Your all-in-one focus companion.'}
+              {activeTab === 'goals' && 'Set and achieve your study goals.'}
+              {activeTab === 'todo' && 'Organize your tasks and assignments.'}
+              {activeTab === 'calendar' && 'Plan your study schedule.'}
+              {activeTab === 'whiteboard' && 'Visualize your ideas and concepts.'}
+            </p>
+          </header>
+          
+          {/* Main content area */}
+          {/* Dynamically renders content based on active navigation tab */}
+          <main className="w-full max-w-2xl">
+            {renderActiveContent()}
+          </main>
+          
+          {/* Footer */}
+          {/* Contextual message based on current feature being viewed */}
+          <footer className="mt-12 text-sm text-amber-600">
+            <p>
+              {activeTab === 'timer' && 'More features coming soon! :3'}
+              {activeTab !== 'timer' && 'This feature is under development! 🛠️'}
+            </p>
+          </footer>
+        </div>
       </div>
-    </div>
+    </TimerProvider>
   );
 }
 

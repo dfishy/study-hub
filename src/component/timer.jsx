@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, /*useEffect, useRef*/ } from 'react';
 import Clock from './clock';
+import { useTimer } from '../context/timercontext';
 
 /**
  * TIMER COMPONENT - Core Study Hub Functionality
@@ -15,88 +16,29 @@ import Clock from './clock';
  * - Real-time countdown with useEffect hooks
  * - Input validation and error handling
  * - Audio notification system
+ * 
+ * This component displays the timer interface and uses global timer state
+ * Timer continues running even when user navigates to other tabs
  */
 const Timer = () => {
-  // STATE MANAGEMENT SECTION
-  // These state variables control the entire timer behavior
-  
-  /**
-   * studyTime: Duration of study sessions in minutes
-   * breakTime: Duration of break sessions in minutes  
-   * timeLeft: Remaining time in seconds for current session
-   * isActive: Whether timer is currently running
-   * isStudyTime: Whether current session is study (true) or break (false)
-   */
-  const [studyTime, setStudyTime] = useState(25);
-  const [breakTime, setBreakTime] = useState(5);
-  const [timeLeft, setTimeLeft] = useState(studyTime * 60);
-  const [isActive, setIsActive] = useState(false);
-  const [isStudyTime, setIsStudyTime] = useState(true);
+  // Get timer state and functions from global context
+  const {
+    studyTime,
+    breakTime,
+    timeLeft,
+    isActive,
+    isStudyTime,
+    toggleTimer,
+    resetTimer,
+    fullResetTimer,
+    updateStudyTime,
+    updateBreakTime,
+    audioRef
+  } = useTimer();
+
+  // Local state for input fields
   const [customStudyInput, setCustomStudyInput] = useState('');
   const [customBreakInput, setCustomBreakInput] = useState('');
-
-
-  /**
-   * CORE TIMER LOGIC - useEffect Hook
-   * 
-   * This is the most complex part of the application. It handles:
-   * - Real-time countdown using setInterval
-   * - Automatic switching between study/break modes
-   * - Cleanup to prevent memory leaks
-   * 
-   * Dependencies array ensures proper updates when state changes
-   */
-  useEffect(() => {
-    let interval = null;
-    
-    // Only run timer if active and time hasn't expired
-    if (isActive && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(timeLeft - 1);
-      }, 1000);
-    } 
-    // Handle timer completion and mode switching
-    else if (isActive && timeLeft === 0) {
-      clearInterval(interval);
-      
-      // Switch between study and break modes
-      if (isStudyTime) {
-        // Transition to break time
-        setTimeLeft(breakTime * 60);
-        setIsStudyTime(false);
-      } else {
-        // Transition back to study time
-        setTimeLeft(studyTime * 60);
-        setIsStudyTime(true);
-      }
-    }
-    
-    // Cleanup function - crucial for preventing memory leaks
-    return () => clearInterval(interval);
-  }, [isActive, timeLeft, isStudyTime, studyTime, breakTime]);
-
-  /**
-   * TIMER CONTROL FUNCTIONS
-   * These functions provide the user interface for timer manipulation
-   */
-
-  // Toggles timer between running and paused states
-  const toggleTimer = () => {
-    setIsActive(!isActive);
-  };
-
-  // Resets current session without changing mode
-  const resetTimer = () => {
-    setIsActive(false);
-    setTimeLeft(isStudyTime ? studyTime * 60 : breakTime * 60);
-  };
-
-  // Completely resets timer to initial study mode
-  const fullResetTimer = () => {
-    setIsActive(false);
-    setIsStudyTime(true);
-    setTimeLeft(studyTime * 60);
-  };
 
   /**
    * INPUT VALIDATION FUNCTIONS
@@ -111,11 +53,7 @@ const Timer = () => {
     
     // Only update if input is valid positive number
     if (!isNaN(numValue) && numValue > 0) {
-      setStudyTime(numValue);
-      // Update displayed time if not active and in study mode
-      if (!isActive && isStudyTime) {
-        setTimeLeft(numValue * 60);
-      }
+      updateStudyTime(numValue);
     }
   };
 
@@ -127,10 +65,7 @@ const Timer = () => {
     
     // Input validation for positive numbers
     if (!isNaN(numValue) && numValue > 0) {
-      setBreakTime(numValue);
-      if (!isActive && !isStudyTime) {
-        setTimeLeft(numValue * 60);
-      }
+      updateBreakTime(numValue);
     }
   };
 
@@ -146,6 +81,8 @@ const Timer = () => {
     // Main container with dynamic styling based on current mode
     <div className={`flex flex-col items-center justify-center p-8 rounded-3xl shadow-lg transition-colors duration-500 ${timerModeClass}`}>
       
+      {/* WILL BE ADDED!!! Hidden audio element for session completion notifications */}
+      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
       
       {/* CLOCK COMPONENT */}
       {/* Displays time visually with analog clock and digital readout */}
@@ -228,7 +165,7 @@ const Timer = () => {
       {/* ERROR DISPLAY */}
       {/* Shows validation errors for invalid inputs */}
       {(customStudyInput <= 0 || customBreakInput <= 0) && (
-        <p className="text-red-500 mt-4 text-sm font-['VT323']">
+        <p className="text-red-500 mt-4 text-sm font-['VT-23']">
           Please enter a positive number.
         </p>
       )}
