@@ -1,22 +1,22 @@
 # Study Hub
 
 Group Project for CSE3311
-An all-in-one study productivity app
+<br/> An all-in-one study productivity app
 
 # Iteration 2 (as of 10/13/25)
 # Live Features:
-Pomodoro Timer
-Navigation
+<br/> Pomodoro Timer
+<br/> Navigation
 
 # Planned Features:
 Login with email
-Set time goals
-Create to do items
-View to do items on calendar
-Whiteboard for notes
-Rewards for completing tasks - new background images and music to play while you study!
+<br/> Set time goals
+<br/> Create to do items
+<br/> View to do items on calendar
+<br/> Whiteboard for notes
+<br/> Rewards for completing tasks - new background images and music to play while you study!
 
 # Try it out!
 This web app is hosted at https://study-hub.dev
-If you would like to submit feedback please fill out our Google Form:
-https://forms.gle/kXB7jccv4WgA8g9m8
+<br/> If you would like to submit feedback please fill out our Google Form:
+<br/> https://forms.gle/kXB7jccv4WgA8g9m8
