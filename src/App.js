@@ -3,6 +3,16 @@ import FloatingNav from './component/floatingnav';
 import { useState } from 'react';
 import { TimerProvider } from './context/timercontext';
 
+// For authentication with supabase
+import './index.css'
+  import { useEffect } from 'react'
+  import { createClient } from '@supabase/supabase-js'
+  import { Auth } from '@supabase/auth-ui-react'
+  import { ThemeSupa } from '@supabase/auth-ui-shared'
+  // connect to supabase
+  const supabase = createClient('https://tqmdfchekcshxcufdyke.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbWRmY2hla2NzaHhjdWZkeWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzUyOTMsImV4cCI6MjA3NDY1MTI5M30.6W9wpLsU6mpikeTTX6KKcW0NKk9T1WiBoVdZKiXF6Mk')
+
+
 /**
  * STUDY HUB - MAIN APPLICATION COMPONENT
  * 
@@ -19,8 +29,31 @@ import { TimerProvider } from './context/timercontext';
  */
 
 function App() {
+  // authentication state
+  //const [session, setSession] = useState(null)
+
   // State to track active tab for navigation
   const [activeTab, setActiveTab] = useState('timer');
+
+  // // on component mount, check auth state
+  // useEffect(() => {
+  //   supabase.auth.getSession().then(({ data: { session } }) => {
+  //     setSession(session)
+  //   })
+  //   const {
+  //     data: { subscription },
+  //   } = supabase.auth.onAuthStateChange((_event, session) => {
+  //     setSession(session)
+  //   })
+  //   return () => subscription.unsubscribe()
+  //   }, [])
+
+  // // if no session, show login
+  // if (!session) {
+  //   return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />)
+  // }
+
+
 
   /**
    * RENDER ACTIVE TAB CONTENT
@@ -108,6 +141,16 @@ function App() {
               {activeTab === 'timer' && 'More features coming soon! :3'}
               {activeTab !== 'timer' && 'This feature is under development! 🛠️'}
             </p>
+              <p className="mt-2">
+            <a 
+              href="https://forms.gle/XynurD2b8xXwPSuF6" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="underline hover:text-amber-700"
+            >
+              Submit Feedback
+            </a>
+          </p>
           </footer>
         </div>
       </div>
