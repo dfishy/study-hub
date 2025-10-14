@@ -5,7 +5,7 @@ Group Project for CSE3311
 
 # Iteration 2 (as of 10/13/25)
 # Live Features:
-<br/> Pomodoro Timer
+Pomodoro Timer
 <br/> Navigation
 <br/> Calendar To-do Items
 
