@@ -7,12 +7,12 @@ Group Project for CSE3311
 # Live Features:
 <br/> Pomodoro Timer
 <br/> Navigation
+<br/> Calendar To-do Items
 
 # Planned Features:
 Login with email
 <br/> Set time goals
 <br/> Create to do items
-<br/> View to do items on calendar
 <br/> Whiteboard for notes
 <br/> Rewards for completing tasks - new background images and music to play while you study!
 
