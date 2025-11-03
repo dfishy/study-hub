@@ -1,5 +1,5 @@
 import Timer from './component/timer';
-import FloatingNav from './component/floatingnav';
+import SidebarNav from './component/sidebarnav';
 import { useState } from 'react';
 import Calendar from './component/calendar';
 import { TimerProvider } from './context/timercontext';
@@ -103,9 +103,8 @@ function App() {
         {/* relative positioning allows floating nav to position absolutely within */}
         <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 font-['VT323'] relative">
           
-          {/* Floating Navigation Component */}
-          {/* Provides draggable tab navigation across all Study Hub features */}
-          <FloatingNav 
+          {/* Sidebar Navigation Component */}
+          <SidebarNav
             activeTab={activeTab} 
             onTabChange={setActiveTab} 
           />

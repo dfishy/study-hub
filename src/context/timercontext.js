@@ -1,10 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-/**
- * TIMER CONTEXT
- * Provides global timer state management so timer continues running
- * even when user switches between different tabs in the application
- */
 const TimerContext = createContext();
 
 export const useTimer = () => {
@@ -17,56 +12,58 @@ export const useTimer = () => {
 
 export const TimerProvider = ({ children }) => {
   // STATE MANAGEMENT SECTION
-  // These state variables control the entire timer behavior
   const [studyTime, setStudyTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const [isStudyTime, setIsStudyTime] = useState(true);
+  const [showTransitionModal, setShowTransitionModal] = useState(false); 
   
   const audioRef = useRef(null);
 
-  /**
-   * CORE TIMER LOGIC - useEffect Hook
-   * This runs globally and persists across tab changes
-   */
   useEffect(() => {
     let interval = null;
     
-    // Only run timer if active and time hasn't expired
     if (isActive && timeLeft > 0) {
+      // Play sound 3 seconds before timer ends
+      if (timeLeft === 2 && audioRef.current) {
+        audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+      }
+      
       interval = setInterval(() => {
         setTimeLeft(prevTime => prevTime - 1);
       }, 1000);
     } 
-    // Handle timer completion and mode switching
+    // Handle timer completion
     else if (isActive && timeLeft === 0) {
       clearInterval(interval);
       
-      // Play notification sound when session ends
-      if (audioRef.current) {
-        audioRef.current.play().catch(e => console.log('Audio play failed:', e));
-      }
-      
-      // Switch between study and break modes
-      if (isStudyTime) {
-        // Transition to break time
-        setTimeLeft(breakTime * 60);
-        setIsStudyTime(false);
-      } else {
-        // Transition back to study time
-        setTimeLeft(studyTime * 60);
-        setIsStudyTime(true);
-      }
+      // Wait a moment then pause and show modal
+      setTimeout(() => {
+        setIsActive(false);
+        setShowTransitionModal(true);
+      }, 100);
     }
     
-    // Cleanup function - crucial for preventing memory leaks
     return () => {
       if (interval) clearInterval(interval);
     };
   }, [isActive, timeLeft, isStudyTime, studyTime, breakTime]);
 
-  // Timer control functions
+
+  // NEW FUNCTION: Handle user confirmation to switch modes
+  const confirmTransition = () => {
+    if (isStudyTime) {
+      setTimeLeft(breakTime * 60);
+      setIsStudyTime(false);
+    } else {
+      setTimeLeft(studyTime * 60);
+      setIsStudyTime(true);
+    }
+    setShowTransitionModal(false);
+  };
+
+  // Timer control functions (existing)
   const toggleTimer = () => {
     setIsActive(!isActive);
   };
@@ -82,7 +79,6 @@ export const TimerProvider = ({ children }) => {
     setTimeLeft(studyTime * 60);
   };
 
-  // Update study time
   const updateStudyTime = (newTime) => {
     setStudyTime(newTime);
     if (!isActive && isStudyTime) {
@@ -90,7 +86,6 @@ export const TimerProvider = ({ children }) => {
     }
   };
 
-  // Update break time
   const updateBreakTime = (newTime) => {
     setBreakTime(newTime);
     if (!isActive && !isStudyTime) {
@@ -104,6 +99,8 @@ export const TimerProvider = ({ children }) => {
     timeLeft,
     isActive,
     isStudyTime,
+    showTransitionModal,      // NEW
+    confirmTransition,        // NEW
     toggleTimer,
     resetTimer,
     fullResetTimer,
