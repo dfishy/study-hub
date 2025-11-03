@@ -187,14 +187,6 @@ const FloatingNav = ({ activeTab, onTabChange }) => {
         ))}
       </div>
 
-      {/* Current Tab Indicator - only show when expanded in vertical mode */}
-      {!isCollapsed && !isHorizontal && (
-        <div className="absolute bottom-1 left-1 right-1 px-2 py-1 bg-amber-200/50 rounded text-center">
-          <div className="text-xs text-amber-700 font-['VT323'] truncate">
-            Active: {tabs.find(t => t.id === activeTab)?.label}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -21,13 +21,14 @@ import { useTimer } from '../context/timercontext';
  * Timer continues running even when user navigates to other tabs
  */
 const Timer = () => {
-  // Get timer state and functions from global context
   const {
     studyTime,
     breakTime,
     timeLeft,
     isActive,
     isStudyTime,
+    showTransitionModal,    // NEW
+    confirmTransition,      // NEW
     toggleTimer,
     resetTimer,
     fullResetTimer,
@@ -81,8 +82,8 @@ const Timer = () => {
     // Main container with dynamic styling based on current mode
     <div className={`flex flex-col items-center justify-center p-8 rounded-3xl shadow-lg transition-colors duration-500 ${timerModeClass}`}>
       
-      {/* WILL BE ADDED!!! Hidden audio element for session completion notifications */}
-      <audio ref={audioRef} src="/notification.mp3" preload="auto" />
+      {/* Audio element for session completion notifications */}
+      <audio ref={audioRef} src="/sounds/chime.mp3" preload="auto" />
       
       {/* CLOCK COMPONENT */}
       {/* Displays time visually with analog clock and digital readout */}
@@ -162,12 +163,28 @@ const Timer = () => {
         </div>
       </div>
       
-      {/* ERROR DISPLAY */}
-      {/* Shows validation errors for invalid inputs */}
-      {(customStudyInput <= 0 || customBreakInput <= 0) && (
-        <p className="text-red-500 mt-4 text-sm font-['VT-23']">
-          Please enter a positive number.
-        </p>
+{/* ... your existing code ... */}
+      
+      {/* TRANSITION MODAL */}
+      {showTransitionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 shadow-2xl max-w-md mx-4 text-center">
+            <h2 className="text-3xl font-['VT323'] mb-4 text-gray-800">
+              {isStudyTime ? 'Study Session Complete!' : 'Break Time Over!'}
+            </h2>
+            <p className="text-xl font-['VT323'] mb-6 text-gray-600">
+              {isStudyTime 
+                ? `Ready for a break?` 
+                : `Ready to study?`}
+            </p>
+            <button
+              onClick={confirmTransition}
+              className="px-8 py-3 bg-green-500 text-white rounded-xl font-['VT323'] text-xl shadow-md transition hover:bg-green-600 hover:scale-105"
+            >
+              {isStudyTime ? "OK" : "OK"}
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
