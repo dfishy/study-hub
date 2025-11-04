@@ -27,8 +27,8 @@ const Timer = () => {
     timeLeft,
     isActive,
     isStudyTime,
-    showTransitionModal,    // NEW
-    confirmTransition,      // NEW
+    showTransitionModal,
+    confirmTransition,
     toggleTimer,
     resetTimer,
     fullResetTimer,
@@ -86,7 +86,8 @@ const Timer = () => {
     <div className={`flex flex-col items-center justify-center p-8 rounded-3xl shadow-lg transition-colors duration-500 ${timerModeClass}`}>
       
       {/* Audio element for session completion notifications */}
-      <audio ref={audioRef} src="/sounds/chime.mp3" preload="auto" />
+      {/* <audio ref={audioRef} src="/sounds/chime.mp3" preload="auto" /> BROKE AWS FIX LATER*/}
+      <audio ref={audioRef} src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto" />
       
       {/* CLOCK COMPONENT */}
       {/* Displays time visually with analog clock and digital readout */}
