@@ -4,7 +4,10 @@ import { useState } from 'react';
 import Calendar from './component/calendar';
 import { TimerProvider } from './context/timercontext';
 import { CalendarProvider } from './context/calendarcontext';
+import { TodoProvider } from './context/todocontext';
+import Todo from './component/todo';
 import Goals from './component/goals';
+
 
 // For authentication with supabase
 import './index.css'
@@ -70,12 +73,7 @@ function App() {
       case 'goals':
         return <Goals />;
       case 'todo':
-        return (
-          <div className="text-center py-16">
-            <h2 className="text-3xl font-['VT323'] text-amber-900 mb-4">📝 To Do</h2>
-            <p className="text-amber-700">Manage your tasks and assignments. Coming soon!</p>
-          </div>
-        );
+        return <Todo />;
       case 'calendar':
         return <Calendar />;
       case 'whiteboard':
@@ -94,6 +92,7 @@ function App() {
     // Wrap entire app with TimerProvider for global timer state management
     <TimerProvider>
       <CalendarProvider>
+        <TodoProvider> 
         {/* The main container with gradient background and font */}
         {/* min-h-screen ensures it takes full viewport height */}
         {/* relative positioning allows floating nav to position absolutely within */}
@@ -147,6 +146,7 @@ function App() {
             </footer>
           </div>
         </div>
+        </TodoProvider>
       </CalendarProvider>
     </TimerProvider>
   );

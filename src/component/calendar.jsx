@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCalendar } from '../context/calendarcontext';
+import { useTodo } from '../context/todocontext';
 
 /**
  * CALENDAR COMPONENT
@@ -24,6 +25,7 @@ const Calendar = () => {
     deleteEvent,
     toggleEventCompletion
   } = useCalendar();
+  const { getTasksForDate } = useTodo();
 
   const [newEventTitle, setNewEventTitle] = useState('');
   const [newEventType, setNewEventType] = useState('study');
@@ -243,6 +245,12 @@ const Calendar = () => {
                       </div>
                     )}
                   </div>
+                  {/* To-Do count indicator */}
+                    {getTasksForDate(date).length > 0 && (
+                      <div className="text-xs text-amber-700 font-['VT323'] mt-1 text-center">
+                        📌 {getTasksForDate(date).length} task{getTasksForDate(date).length > 1 ? 's' : ''}
+                      </div>
+                    )}
                 </>
               )}
             </div>
