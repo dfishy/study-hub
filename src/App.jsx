@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Calendar from './component/calendar';
 import { TimerProvider } from './context/timercontext';
 import { CalendarProvider } from './context/calendarcontext';
+import Goals from './component/goals';
 
 // For authentication with supabase
 import './index.css'
@@ -67,12 +68,7 @@ function App() {
       case 'timer':
         return <Timer />;
       case 'goals':
-        return (
-          <div className="text-center py-16">
-            <h2 className="text-3xl font-['VT323'] text-amber-900 mb-4">🎯 Goals</h2>
-            <p className="text-amber-700">Set and track your study goals here. Coming soon!</p>
-          </div>
-        );
+        return <Goals />;
       case 'todo':
         return (
           <div className="text-center py-16">

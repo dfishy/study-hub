@@ -34,7 +34,10 @@ const Timer = () => {
     fullResetTimer,
     updateStudyTime,
     updateBreakTime,
-    audioRef
+    audioRef,
+    goals,
+    selectedGoal,
+    setSelectedGoal
   } = useTimer();
 
   // Local state for input fields
@@ -88,6 +91,28 @@ const Timer = () => {
       {/* CLOCK COMPONENT */}
       {/* Displays time visually with analog clock and digital readout */}
       <Clock timeLeft={timeLeft} isStudyTime={isStudyTime} isActive={isActive} />
+
+      {/* CATEGORY SELECTOR */}
+      {/* Allows user to choose which goal they're studying for */}
+      <div className="mb-6 w-full max-w-md">
+        <label htmlFor="goalSelect" className="block mb-2 font-['VT323'] font-medium text-center">
+          Studying for:
+        </label>
+        <select
+          id="goalSelect"
+          value={selectedGoal || ''}
+          onChange={(e) => setSelectedGoal(e.target.value ? parseInt(e.target.value) : null)}
+          className="w-full px-4 py-2 border border-amber-300 rounded-lg text-center font-['VT323'] text-xl focus:outline-none focus:ring-2 focus:ring-amber-400"
+          disabled={isActive}
+        >
+          <option value="">Select a goal...</option>
+          {goals.map((goal) => (
+            <option key={goal.id} value={goal.id}>
+              {goal.name}
+            </option>
+          ))}
+        </select>
+      </div>
       
       {/* CONTROL BUTTONS SECTION */}
       {/* Provides user interface for timer manipulation */}
@@ -162,8 +187,7 @@ const Timer = () => {
           />
         </div>
       </div>
-      
-{/* ... your existing code ... */}
+    
       
       {/* TRANSITION MODAL */}
       {showTransitionModal && (
