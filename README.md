@@ -3,16 +3,16 @@
 Group Project for CSE3311
 <br/> An all-in-one study productivity app
 
-# Iteration 2 (as of 10/13/25)
+# Iteration 3 (as of 11/4/25)
 # Live Features:
 Pomodoro Timer
 <br/> Navigation
-<br/> Calendar To-do Items
-
+<br/> Calendar
+<br/> To Do List
+<br/> Time Goals
+ 
 # Planned Features:
 Login with email
-<br/> Set time goals
-<br/> Create to do items
 <br/> Whiteboard for notes
 <br/> Rewards for completing tasks - new background images and music to play while you study!
 
