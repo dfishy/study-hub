@@ -133,7 +133,7 @@ function App() {
               </p>
               <p className="mt-2">
                 <a 
-                  href="https://forms.gle/bh2gvfJF2adsb6ao7" 
+                  href="https://forms.gle/KRTWWmB53xMfJV248" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="underline hover:text-amber-700"
