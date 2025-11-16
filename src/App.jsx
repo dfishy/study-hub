@@ -7,17 +7,13 @@ import { CalendarProvider } from './context/calendarcontext';
 import { TodoProvider } from './context/todocontext';
 import Todo from './component/todo';
 import Goals from './component/goals';
+import DatabaseTest from './component/databasetest'
 
-
-// For authentication with supabase
-import './index.css'
-import { useEffect } from 'react'
+// Supabase client
 import { createClient } from '@supabase/supabase-js'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-// connect to supabase
-const supabase = createClient('https://tqmdfchekcshxcufdyke.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbWRmY2hla2NzaHhjdWZkeWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzUyOTMsImV4cCI6MjA3NDY1MTI5M30.6W9wpLsU6mpikeTTX6KKcW0NKk9T1WiBoVdZKiXF6Mk')
-
+const supabaseUrl = 'https://tqmdfchekcshxcufdyke.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbWRmY2hla2NzaHhjdWZkeWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzUyOTMsImV4cCI6MjA3NDY1MTI5M30.6W9wpLsU6mpikeTTX6KKcW0NKk9T1WiBoVdZKiXF6Mk'
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 /**
  * STUDY HUB - MAIN APPLICATION COMPONENT
@@ -90,12 +86,14 @@ function App() {
 
   return (
     // Wrap entire app with TimerProvider for global timer state management
+    
     <TimerProvider>
       <CalendarProvider>
         <TodoProvider> 
         {/* The main container with gradient background and font */}
         {/* min-h-screen ensures it takes full viewport height */}
         {/* relative positioning allows floating nav to position absolutely within */}
+        <DatabaseTest />
         <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 font-['VT323'] relative">
           
           {/* Sidebar Navigation Component */}
@@ -135,7 +133,7 @@ function App() {
               </p>
               <p className="mt-2">
                 <a 
-                  href="https://forms.gle/XynurD2b8xXwPSuF6" 
+                  href="https://forms.gle/bh2gvfJF2adsb6ao7" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="underline hover:text-amber-700"
