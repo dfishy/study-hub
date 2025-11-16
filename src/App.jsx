@@ -93,7 +93,7 @@ function App() {
         {/* The main container with gradient background and font */}
         {/* min-h-screen ensures it takes full viewport height */}
         {/* relative positioning allows floating nav to position absolutely within */}
-        <DatabaseTest />
+        {/*<DatabaseTest />*/}
         <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 font-['VT323'] relative">
           
           {/* Sidebar Navigation Component */}
