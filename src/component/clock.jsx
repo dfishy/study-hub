@@ -1,136 +1,150 @@
 import React from 'react';
 
 /**
- * CLOCK COMPONENT - Visual Time Representation
+ * CLOCK COMPONENT - Timer Visualization
  * 
- * This component creates an analog clock display that shows:
- * - Current time remaining in the session
- * - Visual distinction between the study and break modes
- * - Smooth animations for clock hands
- * - Digital readout for precise timing
- * 
- * Complexity Factors:
- * - Mathematical calculations for hand positioning
- * - Coordinate system transformations
- * - Real-time angle calculations
- * - Responsive rendering with CSS
+ * Replaced analog clock with progress-based timer display
+ * Features:
+ * - Circular progress ring that depletes as time counts down
+ * - Color changes based on study/break mode
+ * - Digital time display in center
+ * - Visual urgency as time runs low
  */
-
 const Clock = ({ timeLeft, isStudyTime, isActive }) => {
-  // Convert seconds to hours, minutes, seconds for the clock display
-  const totalSeconds = timeLeft;
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  // Convert time units into rotation angles for clock hands
-  // Angles are calculated in degrees
+  // Convert timeLeft (seconds) to minutes and seconds
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
   
-  const secondAngle = (seconds / 60) * 360;
-  const minuteAngle = ((minutes + seconds / 60) / 60) * 360;
-  const hourAngle = ((hours % 12) + minutes / 60) / 12 * 360;
-
-  // Format time for the digital display
-  const formatTime = (timeInSeconds) => {
-    const mins = Math.floor(timeInSeconds / 60);
-    const secs = timeInSeconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  // Calculate progress percentage (0 to 1)
+  const totalSeconds = isStudyTime ? (25 * 60) : (5 * 60); // 25 min study, 5 min break
+  const progress = timeLeft / totalSeconds;
+  
+  // Circle dimensions
+  const size = 280;
+  const strokeWidth = 12;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (progress * circumference);
+  
+  // Dynamic colors based on mode and time remaining
+  const getColors = () => {
+    if (!isActive) {
+      return {
+        ring: '#d1d5db', // gray when paused
+        background: '#f3f4f6',
+        text: '#6b7280'
+      };
+    }
+    
+    if (isStudyTime) {
+      // Study mode - warm colors that get more urgent as time runs out
+      if (progress > 0.5) return { ring: '#10b981', background: '#ecfdf5', text: '#065f46' }; // green
+      if (progress > 0.25) return { ring: '#f59e0b', background: '#fffbeb', text: '#92400e' }; // amber
+      return { ring: '#ef4444', background: '#fef2f2', text: '#991b1b' }; // red when low time
+    } else {
+      // Break mode - cool colors
+      if (progress > 0.5) return { ring: '#3b82f6', background: '#eff6ff', text: '#1e40af' }; // blue
+      if (progress > 0.25) return { ring: '#8b5cf6', background: '#faf5ff', text: '#5b21b6' }; // purple
+      return { ring: '#ec4899', background: '#fdf2f8', text: '#9d174d' }; // pink when low time
+    }
+  };
+  
+  const colors = getColors();
+  
+  // Format time for display
+  const formatTime = () => {
+    if (minutes === 0 && seconds === 0) return '00:00';
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  
+  // Get status text
+  const getStatusText = () => {
+    if (!isActive) return 'PAUSED';
+    if (timeLeft === 0) return 'TIME\'S UP!';
+    return isStudyTime ? 'STUDY TIME' : 'BREAK TIME';
   };
 
-  // Clock numbers (12, 1, 2, 3, etc.), may change to a slice style instead of hour display
-  const clockNumbers = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
   return (
-    <div className="flex flex-col items-center mb-6">
-      {/* Analog Clock */}
-      <div className="relative mb-4">
-        <div className="analog-clock">
-          {/* Clock numbers */}
-          {clockNumbers.map((number, index) => {
-            const angle = (index * 30) - 90; //Convert index to angle (-90° starts at top) 
-            const radius = 70; // Distance from center
-            const x = 50 + radius * Math.cos(angle * Math.PI / 180);
-            const y = 50 + radius * Math.sin(angle * Math.PI / 180);
-            
-            return (
-              <div
-                key={number}
-                className="absolute text-amber-900 font-['VT323'] text-lg font-bold pointer-events-none"
-                style={{
-                  left: `${x}%`, // Position using percentages for responsiveness
-                  top: `${y}%`,
-                  transform: 'translate(-50%, -50%)' // Should center the number elements
-                }}
-              >
-                {number}
-              </div>
-            );
-          })}
-          
-          
-          
-          {/* Hour hand */}
-          <div 
-            className="absolute top-1/2 left-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, -100%) rotate(${hourAngle}deg)`,
-              width: '8px',
-              height: '50px',
-              backgroundColor: '#dc2626',
-              borderRadius: '4px 4px 2px 2px',
-              zIndex: 30 // Highest z-index (on top)
-            }}
+    <div className="flex flex-col items-center justify-center mb-8">
+      {/* Progress Ring Container */}
+      <div className="relative" style={{ width: size, height: size }}>
+        {/* Background Circle */}
+        <svg width={size} height={size} className="transform -rotate-90">
+          {/* Background track */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={colors.background}
+            strokeWidth={strokeWidth}
+            fill="none"
           />
           
-          {/* Minute hand */}
-          <div 
-            className="absolute top-1/2 left-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, -100%) rotate(${minuteAngle}deg)`,
-              width: '6px',
-              height: '70px',
-              backgroundColor: '#2563eb',
-              borderRadius: '3px 3px 2px 2px',
-              zIndex: 20 // Middle z-index
-            }}
+          {/* Progress ring */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={colors.ring}
+            strokeWidth={strokeWidth}
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            className="transition-all duration-1000 ease-linear"
           />
-          
-          {/* Second hand */}
-          <div 
-            className="absolute top-1/2 left-1/2 origin-bottom"
-            style={{
-              transform: `translate(-50%, -100%) rotate(${secondAngle}deg)`,
-              width: '2px',
-              height: '80px',
-              backgroundColor: '#16a34a',
-              borderRadius: '1px',
-              zIndex: 10 // Lowest z-index
-            }}
-          />
-          
-          {/* Center dot */}
-          <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-600 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-40 border-2 border-white" />
-        </div>
+        </svg>
         
-        {/* Mode indicator around the clock that changes with study and break */}
-        <div className={`absolute -inset-4 rounded-full border-4 ${
-          isStudyTime ? 'border-amber-300' : 'border-pink-300'
-        } opacity-60 pointer-events-none`} />
+        {/* Center Content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          {/* Main Time Display */}
+          <div 
+            className="text-6xl font-['VT323'] font-bold mb-2 transition-colors duration-500"
+            style={{ color: colors.text }}
+          >
+            {formatTime()}
+          </div>
+          
+          {/* Status Text */}
+          <div 
+            className="text-xl font-['VT323'] uppercase tracking-wider transition-colors duration-500"
+            style={{ color: colors.text }}
+          >
+            {getStatusText()}
+          </div>
+          
+          {/* Progress Percentage */}
+          <div 
+            className="text-lg font-['VT323'] mt-2 opacity-70 transition-colors duration-500"
+            style={{ color: colors.text }}
+          >
+            {Math.round(progress * 100)}%
+          </div>
+        </div>
       </div>
-
-      {/* Digital Display */}
-      <div className="text-center mt-6">
-        <div className="font-['VT323'] text-4xl md:text-5xl text-amber-900 mb-2 tracking-wide bg-amber-200 px-4 py-2 rounded-lg border-2 border-amber-300">
-          {formatTime(timeLeft)}
-        </div>
-        <div className={`font-['VT323'] text-lg ${
-          isStudyTime ? 'text-amber-700' : 'text-pink-700'
-        } font-medium px-3 py-1 rounded-full ${
-          isStudyTime ? 'bg-amber-200' : 'bg-pink-200'
-        }`}>
-          {isStudyTime ? '📚 STUDY MODE' : '☕ BREAK TIME'}
-          {!isActive && ' ⏸️ PAUSED'}
-        </div>
+      
+      {/* Mode Indicator */}
+      <div className={`mt-6 px-6 py-3 rounded-2xl font-['VT323'] text-xl uppercase tracking-wide ${
+        isStudyTime 
+          ? 'bg-amber-100 text-amber-900 border-2 border-amber-300' 
+          : 'bg-pink-100 text-pink-900 border-2 border-pink-300'
+      } transition-colors duration-500`}>
+        {isStudyTime ? '📚 Study Session' : '☕ Break Time'}
+      </div>
+      
+      {/* Time Context */}
+      <div className="mt-4 text-center">
+        <p className="font-['VT323'] text-amber-700 text-lg">
+          {isStudyTime 
+            ? `Studying for ${Math.floor(totalSeconds / 60)} minutes` 
+            : `Breaking for ${Math.floor(totalSeconds / 60)} minutes`
+          }
+        </p>
+        {timeLeft < 60 && timeLeft > 0 && (
+          <p className="font-['VT323'] text-red-600 text-lg mt-1 animate-pulse">
+            ⚠️ Less than 1 minute left!
+          </p>
+        )}
       </div>
     </div>
   );

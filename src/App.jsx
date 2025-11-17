@@ -7,6 +7,8 @@ import { CalendarProvider } from './context/calendarcontext';
 import { TodoProvider } from './context/todocontext';
 import Todo from './component/todo';
 import Goals from './component/goals';
+import Whiteboard from './component/whiteboard';
+import './index.css'
 import DatabaseTest from './component/databasetest'
 
 // Supabase client
@@ -31,36 +33,12 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
  */
 
 function App() {
-  // authentication state
-  //const [session, setSession] = useState(null)
-
   // State to track active tab for navigation
   const [activeTab, setActiveTab] = useState('timer');
-
-  // // on component mount, check auth state
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data: { session } }) => {
-  //     setSession(session)
-  //   })
-  //   const {
-  //     data: { subscription },
-  //   } = supabase.auth.onAuthStateChange((_event, session) => {
-  //     setSession(session)
-  //   })
-  //   return () => subscription.unsubscribe()
-  //   }, [])
-
-  // // if no session, show login
-  // if (!session) {
-  //   return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />)
-  // }
-
-
 
   /**
    * RENDER ACTIVE TAB CONTENT
    * Determines which component to display based on current active tab
-   * Currently focuses on Timer as the primary implemented feature
    */
   const renderActiveContent = () => {
     switch (activeTab) {
@@ -73,12 +51,7 @@ function App() {
       case 'calendar':
         return <Calendar />;
       case 'whiteboard':
-        return (
-          <div className="text-center py-16">
-            <h2 className="text-3xl font-['VT323'] text-amber-900 mb-4">🖊️ Whiteboard</h2>
-            <p className="text-amber-700">Brainstorm and visualize ideas. Coming soon!</p>
-          </div>
-        );
+        return <Whiteboard />;
       default:
         return <Timer />;
     }
@@ -103,7 +76,7 @@ function App() {
           />
           
           {/* Main content area with safe padding for floating navigation */}
-          <div className="container mx-auto px-4 py-8 max-w-4xl flex flex-col items-center justify-center">
+          <div className="container mx-auto px-4 py-8 max-w-6xl flex flex-col items-center justify-center">
             
             {/* Header */}
             {/* Introduction to the web app with dynamic text based on active tab */}
@@ -120,7 +93,7 @@ function App() {
             
             {/* Main content area */}
             {/* Dynamically renders content based on active navigation tab */}
-            <main className="w-full max-w-2xl">
+            <main className="w-full">
               {renderActiveContent()}
             </main>
             
