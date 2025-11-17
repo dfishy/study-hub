@@ -8,6 +8,7 @@ import { TodoProvider } from './context/todocontext';
 import Todo from './component/todo';
 import Goals from './component/goals';
 import Whiteboard from './component/whiteboard';
+import Rewards from './component/rewards';
 import './index.css'
 import DatabaseTest from './component/databasetest'
 
@@ -52,6 +53,8 @@ function App() {
         return <Calendar />;
       case 'whiteboard':
         return <Whiteboard />;
+      case 'rewards':                    
+        return <Rewards />;  
       default:
         return <Timer />;
     }
@@ -88,6 +91,7 @@ function App() {
                 {activeTab === 'todo' && 'Organize your tasks and assignments.'}
                 {activeTab === 'calendar' && 'Plan your study schedule.'}
                 {activeTab === 'whiteboard' && 'Visualize your ideas and concepts.'}
+                {activeTab === 'rewards' && 'See how your effort turns into points.'}
               </p>
             </header>
             

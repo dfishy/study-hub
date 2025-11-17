@@ -19,7 +19,8 @@ const SidebarNav = ({ activeTab, onTabChange }) => {
     { id: 'goals', label: 'Goals', icon: '🎯' },
     { id: 'todo', label: 'To Do', icon: '📝' },
     { id: 'calendar', label: 'Calendar', icon: '📅' },
-    { id: 'whiteboard', label: 'Whiteboard', icon: '🖊️' }
+    { id: 'whiteboard', label: 'Whiteboard', icon: '🖊️' },
+    { id: 'rewards', label: 'Rewards', icon: '⭐' }
   ];
 
   const handleTabClick = (tabId) => {
