@@ -12,10 +12,13 @@ Pomodoro Timer
 <br/> To Do List
 <br/> Time Goals
 <br/> Whiteboard
+<br/> Task Completion Rewards
  
-# Planned Features:
+# Future Features:
 Login with email
-<br/> Rewards for completing tasks - new background images and music to play while you study!
+<br/> Unlockable Music
+<br/> Unlockable Backgrounds
+<br/> Motivational Quotes
 
 # Try it out!
 This web app is hosted at https://study-hub.dev
