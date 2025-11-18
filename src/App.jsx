@@ -91,7 +91,7 @@ function AppContent() {
               </p>
               <p className="mt-2">
                 <a
-                  href="https://forms.gle/KRTWWmB53xMfJV248"
+                  href="https://forms.gle/QKhcpq9cJ3E79uTM8"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-amber-700"

@@ -25,4 +25,4 @@ Login with email
 # Try it out!
 This web app is hosted at https://study-hub.dev
 <br/> If you would like to submit feedback please fill out our Google Form:
-<br/> https://forms.gle/KRTWWmB53xMfJV248
+<br/> https://forms.gle/QKhcpq9cJ3E79uTM8
