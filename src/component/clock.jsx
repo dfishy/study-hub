@@ -110,14 +110,7 @@ const Clock = ({ timeLeft, isStudyTime, isActive }) => {
           >
             {getStatusText()}
           </div>
-          
-          {/* Progress Percentage */}
-          <div 
-            className="text-lg font-['VT323'] mt-2 opacity-70 transition-colors duration-500"
-            style={{ color: colors.text }}
-          >
-            {Math.round(progress * 100)}%
-          </div>
+        
         </div>
       </div>
       
