@@ -10,22 +10,25 @@ import Todo from './component/todo';
 import Goals from './component/goals';
 import Whiteboard from './component/whiteboard';
 import Rewards from './component/rewards';
+import CreditsModal from './component/creditsmodal';
 import './index.css'
 
-
-// MUSIC SYSTEM IMPORTS
-import { MusicProvider } from './context/musiccontext';
-import MusicPlayer from './component/musicplayer';
-
+/*
 // Supabase client
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://tqmdfchekcshxcufdyke.supabase.co'
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbWRmY2hla2NzaHhjdWZkeWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNzUyOTMsImV4cCI6MjA3NDY1MTI5M30.6W9wpLsU6mpikeTTX6KKcW0NKk9T1WiBoVdZKiXF6Mk'
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+*/
+
+// MUSIC SYSTEM IMPORTS
+import { MusicProvider } from './context/musiccontext';
+import MusicPlayer from './component/musicplayer';
 
 // Create a separate component for the main content
 function AppContent() {
   const [activeTab, setActiveTab] = useState('timer');
+  const [isCreditsOpen, setIsCreditsOpen] = useState(false);
   const { getActiveBackgroundStyle } = useBackground();
 
   const renderActiveContent = () => {
@@ -58,7 +61,6 @@ function AppContent() {
       />
 
       <div className="container mx-auto px-4 py-8 max-w-6xl flex flex-col items-center justify-center">
-        {/* Full opacity background for content area */}
         <div className="container mx-auto px-4 py-8 max-w-6xl flex flex-col items-center justify-center">
           <div className="w-full bg-amber-50/75 backdrop-blur-sm rounded-3xl p-8 shadow-xl">
             <header className="mb-8 text-center pt-8">
@@ -79,6 +81,8 @@ function AppContent() {
 
             {/* 🎵 MUSIC PLAYER HERE */}
             <MusicPlayer />
+            {/* Credits Modal */}
+            <CreditsModal isOpen={isCreditsOpen} onClose={() => setIsCreditsOpen(false)} />
 
             <footer className="mt-12 text-sm text-amber-600">
               <p>
@@ -94,6 +98,13 @@ function AppContent() {
                 >
                   Submit Feedback
                 </a>
+                <span>•</span>
+                <button
+                  onClick={() => setIsCreditsOpen(true)}
+                  className="underline hover:text-amber-700"
+                >
+                  Credits
+                </button>
               </p>
             </footer>
           </div>
