@@ -1,22 +1,20 @@
 import React from 'react';
+import { useTimer } from '../context/timercontext'; 
 
 /**
  * CLOCK COMPONENT - Timer Visualization
  * 
- * Replaced analog clock with progress-based timer display
- * Features:
- * - Circular progress ring that depletes as time counts down
- * - Color changes based on study/break mode
- * - Digital time display in center
- * - Visual urgency as time runs low
+ * Progress-based timer display that uses actual timer values from context
  */
 const Clock = ({ timeLeft, isStudyTime, isActive }) => {
+  const { studyTime, breakTime } = useTimer(); // Get actual times from context
+  
   // Convert timeLeft (seconds) to minutes and seconds
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   
-  // Calculate progress percentage (0 to 1)
-  const totalSeconds = isStudyTime ? (25 * 60) : (5 * 60); // 25 min study, 5 min break
+  // Calculate progress percentage (0 to 1) using actual times
+  const totalSeconds = isStudyTime ? (studyTime * 60) : (breakTime * 60);
   const progress = timeLeft / totalSeconds;
   
   // Circle dimensions
@@ -136,8 +134,8 @@ const Clock = ({ timeLeft, isStudyTime, isActive }) => {
       <div className="mt-4 text-center">
         <p className="font-['VT323'] text-amber-700 text-lg">
           {isStudyTime 
-            ? `Studying for ${Math.floor(totalSeconds / 60)} minutes` 
-            : `Breaking for ${Math.floor(totalSeconds / 60)} minutes`
+            ? `Studying for ${studyTime} minutes` 
+            : `Breaking for ${breakTime} minutes`
           }
         </p>
         {timeLeft < 60 && timeLeft > 0 && (
