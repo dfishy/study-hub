@@ -130,20 +130,6 @@ const Clock = ({ timeLeft, isStudyTime, isActive }) => {
         {isStudyTime ? '📚 Study Session' : '☕ Break Time'}
       </div>
       
-      {/* Time Context */}
-      <div className="mt-4 text-center">
-        <p className="font-['VT323'] text-amber-700 text-lg">
-          {isStudyTime 
-            ? `Studying for ${studyTime} minutes` 
-            : `Breaking for ${breakTime} minutes`
-          }
-        </p>
-        {timeLeft < 60 && timeLeft > 0 && (
-          <p className="font-['VT323'] text-red-600 text-lg mt-1 animate-pulse">
-            ⚠️ Less than 1 minute left!
-          </p>
-        )}
-      </div>
     </div>
   );
 };

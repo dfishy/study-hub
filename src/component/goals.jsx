@@ -70,7 +70,7 @@ const Goals = () => {
                 id="goalName"
                 value={newGoalName}
                 onChange={(e) => setNewGoalName(e.target.value)}
-                placeholder="e.g., Math, Physics, Programming"
+                placeholder="Subject to Study for"
                 className="w-full px-3 py-2 border border-amber-300 rounded-lg text-center font-['VT323'] text-xl focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>
@@ -84,7 +84,7 @@ const Goals = () => {
                 min="1"
                 value={newGoalHours}
                 onChange={(e) => setNewGoalHours(e.target.value)}
-                placeholder="10"
+                placeholder="5"
                 className="w-full px-3 py-2 border border-amber-300 rounded-lg text-center font-['VT323'] text-xl focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </div>

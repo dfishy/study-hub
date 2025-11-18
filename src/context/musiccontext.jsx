@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useRef } from 'react';
+import { createContext, useContext, useState, useRef, useEffect } from 'react';
 
 const MusicContext = createContext();
 
@@ -6,12 +6,30 @@ export const MusicProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
 
+  // Replace with your actual music files from public/music folder
   const tracks = [
-    'https://assets.mixkit.co/active_storage/sfx/preview/mixkit-meditation-bells-echo-1.mp3',
-    'https://assets.mixkit.co/active_storage/sfx/preview/mixkit-relaxing-ambient-music-1.mp3'
+    { title: 'Lofi 1', src: '/music/lofi1.mp3' },
+    { title: 'Lofi 2', src: '/music/lofi2.mp3' },
+    { title: 'Lofi 3', src: '/music/lofi3.mp3' },
+    { title: 'Lofi 4', src: '/music/lofi4.mp3' },
   ];
 
-  const audioRef = useRef(new Audio(tracks[trackIndex]));
+  const audioRef = useRef(new Audio(tracks[trackIndex].src));
+
+  // Handle track end - auto play next
+  useEffect(() => {
+    const audio = audioRef.current;
+    
+    const handleTrackEnd = () => {
+      nextTrack();
+    };
+
+    audio.addEventListener('ended', handleTrackEnd);
+    
+    return () => {
+      audio.removeEventListener('ended', handleTrackEnd);
+    };
+  }, [trackIndex]);
 
   // Play / Pause toggle
   const toggleMusic = () => {
@@ -28,7 +46,7 @@ export const MusicProvider = ({ children }) => {
     audioRef.current.pause();
     const nextIndex = (trackIndex + 1) % tracks.length;
     setTrackIndex(nextIndex);
-    audioRef.current.src = tracks[nextIndex];
+    audioRef.current.src = tracks[nextIndex].src;
     if (isPlaying) audioRef.current.play();
   };
 

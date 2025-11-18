@@ -26,8 +26,6 @@ export const TimerProvider = ({ children }) => {
   
   // GOALS STATE
   const [goals, setGoals] = useState([
-    { id: 1, name: 'Math', targetHours: 10, completedMinutes: 240 },
-    { id: 2, name: 'Physics', targetHours: 8, completedMinutes: 90 }
   ]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   
