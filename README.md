@@ -12,16 +12,17 @@ Pomodoro Timer
 <br/> To Do List
 <br/> Time Goals
 <br/> Whiteboard
-<br/> Task Completion Rewards
+<br/> Rewards
+<br/> Music
+<br/> Unlockable Background Images
  
 # Future Features:
 Login with email
-<br/> Unlockable Music
-<br/> Unlockable Backgrounds
+<br/> Advanced Customization
 <br/> Motivational Quotes
+<br/> Study Focus Areas
 
 # Try it out!
 This web app is hosted at https://study-hub.dev
 <br/> If you would like to submit feedback please fill out our Google Form:
 <br/> https://forms.gle/KRTWWmB53xMfJV248
-s
