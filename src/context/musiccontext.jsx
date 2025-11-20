@@ -21,7 +21,7 @@ export const MusicProvider = ({ children }) => {
   useEffect(() => {
     const audio = audioRef.current;
     audio.src = tracks[trackIndex].src;
-    audio.load(); // ← This loads the audio file!
+    audio.load();
     
     if (isPlaying) {
       audio.play().catch(err => console.error('Play failed:', err));
@@ -47,6 +47,7 @@ export const MusicProvider = ({ children }) => {
 
   const toggleMusic = () => {
     const audio = audioRef.current;
+    audio.load();
     
     if (!isPlaying) {
       audio.play().catch(err => {
