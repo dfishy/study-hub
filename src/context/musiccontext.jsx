@@ -6,7 +6,6 @@ export const MusicProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
 
-  // Replace with your actual music files from public/music folder
   const tracks = [
     { title: 'Lofi 1', src: '/music/lofi1.mp3' },
     { title: 'Lofi 2', src: '/music/lofi2.mp3' },
@@ -14,11 +13,26 @@ export const MusicProvider = ({ children }) => {
     { title: 'Lofi 4', src: '/music/lofi4.mp3' },
   ];
 
-  const audioRef = useRef(new Audio(tracks[trackIndex].src));
+  // changed to fix bug
+  // was const audioRef = useRef(new Audio(tracks[trackIndex].src));
+  const audioRef = useRef(new Audio(tracks[0].src));
+
+  // Update audio source when track changes
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.src = tracks[trackIndex].src;
+    audio.load(); // ← This loads the audio file!
+    
+    if (isPlaying) {
+      audio.play().catch(err => console.error('Play failed:', err));
+    }
+  }, [trackIndex]);
+
 
   // Handle track end - auto play next
   useEffect(() => {
     const audio = audioRef.current;
+    
     
     const handleTrackEnd = () => {
       nextTrack();
@@ -31,23 +45,24 @@ export const MusicProvider = ({ children }) => {
     };
   }, [trackIndex]);
 
-  // Play / Pause toggle
   const toggleMusic = () => {
+    const audio = audioRef.current;
+    
     if (!isPlaying) {
-      audioRef.current.play();
+      audio.play().catch(err => {
+        console.error('Play failed:', err);
+      });
+      setIsPlaying(true);
     } else {
-      audioRef.current.pause();
+      audio.pause();
+      setIsPlaying(false);
     }
-    setIsPlaying(!isPlaying);
   };
 
   // Switch track
   const nextTrack = () => {
     audioRef.current.pause();
-    const nextIndex = (trackIndex + 1) % tracks.length;
-    setTrackIndex(nextIndex);
-    audioRef.current.src = tracks[nextIndex].src;
-    if (isPlaying) audioRef.current.play();
+    setTrackIndex((prevIndex) => (prevIndex + 1) % tracks.length);
   };
 
   return (
